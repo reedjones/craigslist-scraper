@@ -49,8 +49,11 @@ export class CrawlerSetup {
       headless: true,
       // for each request preform the following:
       requestHandler: async ({ page, request }) => {
+
+        
         
         console.log(`Scraping ${await page.title()} | ${request.url}`);
+        await page.waitForSelector('.results', { timeout: 10000 });
 
         // collect important features from the current page including post titles, urls, and dates of posting
       
@@ -80,7 +83,7 @@ console.log('hello');
                     const title = titleElement ? titleElement.textContent : '';
                     const url = urlElement ? urlElement.href : '';
                     const date = dateElement ? new Date(dateElement.title).toISOString() : '';
-
+console.log(title);
                     return { title, url, date };
                 });
             });
