@@ -72,20 +72,20 @@ export class CrawlerSetup {
 
 
         // Sanity Check: Confirm the list of titles matched the number of dates and urls discovered
-        try {
-          assert.equal(
-            titles.length,
-            urls.length,
-            `The number of titles found does not match the number of urls found`
-          );
-          assert.equal(
-            urls.length,
-            dates.length,
-            `The number of titles found does not match the number of urls found`
-          );
-        } catch (AssertionError) {
-          console.warn(`${AssertionError}`);
-        }
+        // try {
+        //   assert.equal(
+        //     titles.length,
+        //     urls.length,
+        //     `The number of titles found does not match the number of urls found`
+        //   );
+        //   assert.equal(
+        //     urls.length,
+        //     dates.length,
+        //     `The number of titles found does not match the number of urls found`
+        //   );
+        // } catch (AssertionError) {
+        //   console.warn(`${AssertionError}`);
+        // }
 
         // construct an array of Craigslist Post objects using the features collected from the page
         var posts: CraigslistPost[] = [];
