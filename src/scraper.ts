@@ -1,11 +1,11 @@
 import { PROXY_ROTATION_NAMES, SESSION_MAX_USAGE_COUNTS } from "./consts.js";
-import { PlaywrightCrawler } from "crawlee";
+import { PlaywrightCrawler, Dataset } from "crawlee";
 import { strict as assert } from "assert";
 import { CraigslistPost, InputSchema, Search } from "./types.js";
 import { validateInput, getRequestUrls } from "./validation.js";
 import { Actor } from "apify";
 import axios from "axios";
-import { PlaywrightCrawler, Dataset } from 'crawlee';
+
 
 
 export class CrawlerSetup {
@@ -57,93 +57,19 @@ export class CrawlerSetup {
         console.log(`Scraping ${await page.title()} | ${request.url}`);
         await page.waitForSelector('.results', { timeout: 10000 });
 
-        // collect important features from the current page including post titles, urls, and dates of posting
-      
-// const products = await page.evaluate(() => {
-//     const productCards = Array.from(document.querySelectorAll('a[class*="ProductCard_root"]'));
+        let postData: { content: string, title: string }[] = [];
+        const posts = await page.$$eval(".result-node", nodes => {
+          return nodes.map(node => {
+            return { content: node.innerHTML, title: document.title };
+          });
+        });
 
-//     return productCards.map((element) => {
-//         const name = element.querySelector('h3[class*="ProductCard_name"]').textContent;
-//         const price = element.querySelector('div[class*="ProductCard_price"]').textContent;
+        postData.push(...posts);
 
-//         return {
-//             name,
-//             price,
-//         };
-//     });
-// });
-console.log('hello');
-         const date = new Date();
+    console.log(`Got ${posts.length} posts`);
+        await Actor.pushData(postData);
 
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-
-// This arrangement can be altered based on how we want the date's format to appear.
-let currentDate = `${day}-${month}-${year}`;
-        let postData = []; 
-   // collect important features from the current page including post titles, urls, and dates of posting
-            const posts = await page.$$eval(".result-node", (nodes: any[]) => {
-              
-               const log1 = `Found ${nodes.length} results`; 
-               let log2 = [];  
-                return nodes.map(node => {
-//                     const titleElement = node.querySelector(".posting-title .label");
-//                     const urlElement = node.querySelector(".posting-title");
-//                     const dateElement = node.querySelector(".meta span[title]");
-   
-//                     const titleElement2 = node.querySelector(".result-info .posting-title .label");
-//                     const urlElement2 = node.querySelector(".result-info .posting-title");
-//                     const dateElement2 = node.querySelector(".result-info .meta span[title]");
-
-//                      let log2 = ([titleElement,titleElement2]);
-
-//                     const title = titleElement ? titleElement.textContent : '';
-//                     const url = urlElement ? urlElement.href : '';
-//                     const date = dateElement ? dateElement.title.textContent : "";
-// console.log(title);
-                      postData.push({ content: node.innerHTML, title:page.title() } )
-                    return  { content: node.innerHTML, title:page.title() };
-                });
-            });
-            console.log(posts)
-            // Sanity check: Log the number of posts found
-            console.log(`Got ${posts.length} posts`);
        
-console.log(currentDate); // "17-6-2022"
-        console.log(postData) 
-        if (postData.length > posts.length) {
-            console.log('other bigger');
-           
-await Actor.pushData( postData);
-            
-  
-        } else{
-          
-await Actor.pushData(posts);
-  
-
-        }
-
-            // Save Data to Key Value Store
-           // await Actor.pushData(posts);
-  
-
-    
-        // // construct an array of Craigslist Post objects using the features collected from the page
-        // var posts: CraigslistPost[] = [];
-        // for (var i in titles) {
-        //   posts.push({
-        //     url: await urls[i]!,
-        //     description: await titles[i]!,
-        //     created: await dates[i]!,
-        //   });
-        //   //console.info(posts)
-        // }
-
-        // Save Data to Key Value Store
-        //await Actor.pushData(posts);
-        console.log('pushed posts', posts, postData);
 
         if(this.input.externalAPI) {
           console.log('sending posts to external API ');
