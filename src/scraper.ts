@@ -77,32 +77,43 @@ console.log('hello');
                const log1 = `Found ${nodes.length} results`; 
                let log2 = [];  
                 return nodes.map(node => {
-                    const titleElement = node.querySelector(".posting-title .label");
-                    const urlElement = node.querySelector(".posting-title");
-                    const dateElement = node.querySelector(".meta span[title]");
+//                     const titleElement = node.querySelector(".posting-title .label");
+//                     const urlElement = node.querySelector(".posting-title");
+//                     const dateElement = node.querySelector(".meta span[title]");
    
-                    const titleElement2 = node.querySelector(".result-info .posting-title .label");
-                    const urlElement2 = node.querySelector(".result-info .posting-title");
-                    const dateElement2 = node.querySelector(".result-info .meta span[title]");
+//                     const titleElement2 = node.querySelector(".result-info .posting-title .label");
+//                     const urlElement2 = node.querySelector(".result-info .posting-title");
+//                     const dateElement2 = node.querySelector(".result-info .meta span[title]");
 
-                     let log2 = ([titleElement,titleElement2]);
+//                      let log2 = ([titleElement,titleElement2]);
 
-                    const title = titleElement ? titleElement.textContent : '';
-                    const url = urlElement ? urlElement.href : '';
-                    const date = dateElement ? dateElement.title.textContent : "";
-console.log(title);
-                    return  {"title":title, "url":url, "date":date, "log1":log1, "log2":log2 };
+//                     const title = titleElement ? titleElement.textContent : '';
+//                     const url = urlElement ? urlElement.href : '';
+//                     const date = dateElement ? dateElement.title.textContent : "";
+// console.log(title);
+                      
+                    return  { content: node.innerHTML };
                 });
             });
             console.log(posts)
             // Sanity check: Log the number of posts found
             console.log(`Got ${posts.length} posts`);
+        const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentDate = `${day}-${month}-${year}`;
+console.log(currentDate); // "17-6-2022"
+        
 posts.forEach(async (post) => {
-await Actor.pushData({title: post.title, date:post.date, url:post.url});
+await Actor.pushData({title:page.title, date:currentDate, content:post.content});
   
 } )
             // Save Data to Key Value Store
-            await Actor.pushData(posts);
+           // await Actor.pushData(posts);
   
 
     
