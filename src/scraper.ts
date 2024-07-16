@@ -5,6 +5,8 @@ import { CraigslistPost, InputSchema, Search } from "./types.js";
 import { validateInput, getRequestUrls } from "./validation.js";
 import { Actor } from "apify";
 import axios from "axios";
+import { PlaywrightCrawler, Dataset } from 'crawlee';
+
 
 export class CrawlerSetup {
 
