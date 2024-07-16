@@ -101,11 +101,18 @@ export class CrawlerSetup {
         // Save Data to Key Value Store
         await Actor.pushData(posts);
 
+        if(this.input.externalAPI) {
+           await axios.post(this.input.externalAPI, posts).catch ( (err) => {
+console.log(`There was an Error sending data to external API \n API: ${this.input.externalAPI} \n error: ${err}`);
+             
+           } )
+        }
         // Send All posts to backend django server for analyses
         posts.forEach(async (post) => {
           await console.log(post)
           await axios.post(this.input.externalAPI!, post).catch(() => {});
         });
+        
       },
     });
   }
