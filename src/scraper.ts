@@ -1,5 +1,5 @@
 import { PROXY_ROTATION_NAMES, SESSION_MAX_USAGE_COUNTS } from "./consts.js";
-import { PlaywrightCrawler, Dataset } from "crawlee";
+import { PlaywrightCrawler, Dataset, playwrightUtils } from "crawlee";
 import { strict as assert } from "assert";
 import { CraigslistPost, InputSchema, Search } from "./types.js";
 import { validateInput, getRequestUrls } from "./validation.js";
@@ -54,7 +54,7 @@ export class CrawlerSetup {
       // for each request preform the following:
       requestHandler: async ({ page, request }) => {
 
-        
+        const key = request.url.replace(/[:/]/g, '_');
         
         console.log(`Scraping ${await page.title()} | ${request.url}`);
           const actorCard = page.locator('.results').first();
@@ -65,7 +65,7 @@ export class CrawlerSetup {
         const actorText = await actorCard.textContent();
         const screenshot = await page.screenshot();
     // Save the screenshot to the default key-value store
-        await Apify.setValue('snap', screenshot, { contentType: 'image/png' });
+       await playwrightUtils.saveSnapshot(page, { key, saveHtml: false });
 
 
         let postData: { content: string, title: string }[] = [];
