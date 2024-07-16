@@ -12,26 +12,22 @@
         "posts": {
           "title": "posts",
           "transformation": {
-            "fields": ["url", "title", "date"]
+            "fields": ["title", "content"]
           },
           "display": {
             "component": "table",
             "columns": [
               {
-                "label": "url",
+                "label": "content",
                 "format": "string",
-                "field": "url"
+                "field": "content"
               },
               {
                 "label": "title",
                 "format": "string",
                 "field": "title"
-              },
-              {
-                "label": "date",
-                "format": "string",
-                "field": "date"
               }
+          
             ]
           }
         }
