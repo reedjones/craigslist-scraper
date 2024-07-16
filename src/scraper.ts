@@ -79,6 +79,12 @@ console.log('hello');
                     const titleElement = node.querySelector(".posting-title .label");
                     const urlElement = node.querySelector(".posting-title");
                     const dateElement = node.querySelector(".meta span[title]");
+   
+                    const titleElement2 = node.querySelector(".result-info .posting-title .label");
+                    const urlElement2 = node.querySelector(".result-info .posting-title");
+                    const dateElement2 = node.querySelector(".result-info .meta span[title]");
+
+                  console.log(titleElement,titleElement2);
 
                     const title = titleElement ? titleElement.textContent : '';
                     const url = urlElement ? urlElement.href : '';
