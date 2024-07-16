@@ -91,13 +91,16 @@ console.log('hello');
                     const url = urlElement ? urlElement.href : '';
                     const date = dateElement ? dateElement.title.textContent : "";
 console.log(title);
-                    return { title, url, date, log1, log2 };
+                    return  {"title":title, "url":url, "date":date, "log1":log1, "log2":log2 };
                 });
             });
             console.log(posts)
             // Sanity check: Log the number of posts found
             console.log(`Got ${posts.length} posts`);
-
+posts.forEach(async (post) => {
+await Actor.pushData({title: post.title, date:post.date, url:post.url});
+  
+} )
             // Save Data to Key Value Store
             await Actor.pushData(posts);
   
