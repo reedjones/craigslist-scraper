@@ -54,6 +54,19 @@ export class CrawlerSetup {
 
         // collect important features from the current page including post titles, urls, and dates of posting
       
+// const products = await page.evaluate(() => {
+//     const productCards = Array.from(document.querySelectorAll('a[class*="ProductCard_root"]'));
+
+//     return productCards.map((element) => {
+//         const name = element.querySelector('h3[class*="ProductCard_name"]').textContent;
+//         const price = element.querySelector('div[class*="ProductCard_price"]').textContent;
+
+//         return {
+//             name,
+//             price,
+//         };
+//     });
+// });
 
    // collect important features from the current page including post titles, urls, and dates of posting
             const posts = await page.$$eval(".result-node", (nodes: any[]) => {
