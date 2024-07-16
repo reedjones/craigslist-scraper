@@ -50,7 +50,7 @@ export class CrawlerSetup {
       // for each request preform the following:
       requestHandler: async ({ page, request }) => {
         console.log(`Scraping ${await page.title()} | ${request.url}`);
-
+console.log('parsing titles');
         // collect important features from the current page including post titles, urls, and dates of posting
         const titles = await page.$$eval(".titlestring", (els: any[]) => {
           return els.map((el) => el.textContent);
@@ -60,7 +60,7 @@ export class CrawlerSetup {
         const urls = await page.$$eval(".titlestring", (els: any[]) => {
           return els.map((el) => el.getAttribute("href"));
         });
-
+console.log('parsing dates');
         const dates = await page.$$eval(".meta", (els: any[]) => {
           return els.map((el) => {
             let ih =  el.getInnerHTML()
@@ -69,7 +69,7 @@ export class CrawlerSetup {
             return JSON.stringify(created).replace(/\\/g, '').replace(/"/g,'')
           });
         });
-
+console.log('collecting posts');
 
         // Sanity Check: Confirm the list of titles matched the number of dates and urls discovered
         // try {
@@ -95,18 +95,20 @@ export class CrawlerSetup {
             description: await titles[i]!,
             created: await dates[i]!,
           });
-          console.info(posts)
+          //console.info(posts)
         }
 
         // Save Data to Key Value Store
         await Actor.pushData(posts);
+        console.log('pushed posts', posts);
 
         if(this.input.externalAPI) {
+          console.log('sending posts to external API ');
            await axios.post(this.input.externalAPI, posts).catch ( (err) => {
 console.log(`There was an Error sending data to external API \n API: ${this.input.externalAPI} \n error: ${err}`);
              
            } )
-        }
+        } else { console.log('will not send to external api'); }
         // Send All posts to backend django server for analyses
         // posts.forEach(async (post) => {
         //   await console.log(post)
