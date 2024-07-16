@@ -49,57 +49,49 @@ export class CrawlerSetup {
       headless: true,
       // for each request preform the following:
       requestHandler: async ({ page, request }) => {
+        
         console.log(`Scraping ${await page.title()} | ${request.url}`);
-console.log('parsing titles');
+
         // collect important features from the current page including post titles, urls, and dates of posting
-        const titles = await page.$$eval(".titlestring", (els: any[]) => {
-          return els.map((el) => el.textContent);
-        });
+      
 
+   // collect important features from the current page including post titles, urls, and dates of posting
+            const posts = await page.$$eval(".result-node", (nodes: any[]) => {
+               console.log(`Found ${nodes.length} results`);
+                return nodes.map(node => {
+                    const titleElement = node.querySelector(".posting-title .label");
+                    const urlElement = node.querySelector(".posting-title");
+                    const dateElement = node.querySelector(".meta span[title]");
 
-        const urls = await page.$$eval(".titlestring", (els: any[]) => {
-          return els.map((el) => el.getAttribute("href"));
-        });
-console.log('parsing dates');
-        const dates = await page.$$eval(".meta", (els: any[]) => {
-          return els.map((el) => {
-            let ih =  el.getInnerHTML()
-            let ub = ih.search(/\(/)
-            let created = new Date(ih.substring(13,ub-1))
-            return JSON.stringify(created).replace(/\\/g, '').replace(/"/g,'')
-          });
-        });
-console.log('collecting posts');
+                    const title = titleElement ? titleElement.textContent : '';
+                    const url = urlElement ? urlElement.href : '';
+                    const date = dateElement ? new Date(dateElement.title).toISOString() : '';
 
-        // Sanity Check: Confirm the list of titles matched the number of dates and urls discovered
-        // try {
-        //   assert.equal(
-        //     titles.length,
-        //     urls.length,
-        //     `The number of titles found does not match the number of urls found`
-        //   );
-        //   assert.equal(
-        //     urls.length,
-        //     dates.length,
-        //     `The number of titles found does not match the number of urls found`
-        //   );
-        // } catch (AssertionError) {
-        //   console.warn(`${AssertionError}`);
+                    return { title, url, date };
+                });
+            });
+
+            // Sanity check: Log the number of posts found
+            console.log(`Got ${posts.length} posts`);
+
+            // Save Data to Key Value Store
+            await Actor.pushData(posts);
+  
+
+    
+        // // construct an array of Craigslist Post objects using the features collected from the page
+        // var posts: CraigslistPost[] = [];
+        // for (var i in titles) {
+        //   posts.push({
+        //     url: await urls[i]!,
+        //     description: await titles[i]!,
+        //     created: await dates[i]!,
+        //   });
+        //   //console.info(posts)
         // }
 
-        // construct an array of Craigslist Post objects using the features collected from the page
-        var posts: CraigslistPost[] = [];
-        for (var i in titles) {
-          posts.push({
-            url: await urls[i]!,
-            description: await titles[i]!,
-            created: await dates[i]!,
-          });
-          //console.info(posts)
-        }
-
         // Save Data to Key Value Store
-        await Actor.pushData(posts);
+        //await Actor.pushData(posts);
         console.log('pushed posts', posts);
 
         if(this.input.externalAPI) {
