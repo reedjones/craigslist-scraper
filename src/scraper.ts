@@ -7,7 +7,7 @@ import { Actor } from "apify";
 import axios from "axios";
 
 
-const Apify = require('apify');
+
 
 
 export class CrawlerSetup {
@@ -57,7 +57,12 @@ export class CrawlerSetup {
         
         
         console.log(`Scraping ${await page.title()} | ${request.url}`);
+          const actorCard = page.locator('.results').first();
+        // Upon calling one of the locator methods Playwright
+        // waits for the element to render and then accesses it.
+        
         await page.waitForSelector('.results', { timeout: 10000 });
+        const actorText = await actorCard.textContent();
         const screenshot = await page.screenshot();
     // Save the screenshot to the default key-value store
         await Apify.setValue('snap', screenshot, { contentType: 'image/png' });
