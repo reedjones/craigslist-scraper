@@ -108,10 +108,10 @@ console.log(`There was an Error sending data to external API \n API: ${this.inpu
            } )
         }
         // Send All posts to backend django server for analyses
-        posts.forEach(async (post) => {
-          await console.log(post)
-          await axios.post(this.input.externalAPI!, post).catch(() => {});
-        });
+        // posts.forEach(async (post) => {
+        //   await console.log(post)
+        //   await axios.post(this.input.externalAPI!, post).catch(() => {});
+        // });
         
       },
     });
