@@ -16,7 +16,7 @@
     "eslint": "^8.24.0",
     "prettier": "^2.7.1",
     "ts-node": "*",
-    "typescript": "latest"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "start:local": "node dist/main-local.js",
