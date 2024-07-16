@@ -1,0 +1,25 @@
+{
+  "title": "Craigslist Post",
+  "description": "Schema for the output of Craigslist posts scraped by the Playwright Crawler",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "HTML content of the Craigslist post"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the Craigslist post"
+    },
+    "url": {
+      "type": "string",
+      "description": "URL of the Craigslist post"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date the Craigslist post was scraped"
+    }
+  },
+  "required": ["content", "title", "url", "date"]
+}
