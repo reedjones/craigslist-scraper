@@ -73,8 +73,9 @@ export class CrawlerSetup {
 console.log('hello');
    // collect important features from the current page including post titles, urls, and dates of posting
             const posts = await page.$$eval(".result-node", (nodes: any[]) => {
-              console.log('woprld');
-               console.log(`Found ${nodes.length} results`);
+              
+               const log1 = `Found ${nodes.length} results`; 
+               let log2 = [];  
                 return nodes.map(node => {
                     const titleElement = node.querySelector(".posting-title .label");
                     const urlElement = node.querySelector(".posting-title");
@@ -84,16 +85,16 @@ console.log('hello');
                     const urlElement2 = node.querySelector(".result-info .posting-title");
                     const dateElement2 = node.querySelector(".result-info .meta span[title]");
 
-                  console.log(titleElement,titleElement2);
+                     let log2 = ([titleElement,titleElement2]);
 
                     const title = titleElement ? titleElement.textContent : '';
                     const url = urlElement ? urlElement.href : '';
-                    const date = dateElement ? new Date(dateElement.title).toISOString() : '';
+                    const date = dateElement ? dateElement.title.textContent : "";
 console.log(title);
-                    return { title, url, date };
+                    return { title, url, date, log1, log2 };
                 });
             });
-
+            console.log(posts)
             // Sanity check: Log the number of posts found
             console.log(`Got ${posts.length} posts`);
 
