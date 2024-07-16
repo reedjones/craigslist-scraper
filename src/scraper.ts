@@ -73,6 +73,15 @@ export class CrawlerSetup {
 //     });
 // });
 console.log('hello');
+         const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+let currentDate = `${day}-${month}-${year}`;
+        let postData = []; 
    // collect important features from the current page including post titles, urls, and dates of posting
             const posts = await page.$$eval(".result-node", (nodes: any[]) => {
               
@@ -93,27 +102,29 @@ console.log('hello');
 //                     const url = urlElement ? urlElement.href : '';
 //                     const date = dateElement ? dateElement.title.textContent : "";
 // console.log(title);
-                      
-                    return  { content: node.innerHTML };
+                      postData.push({ content: node.innerHTML, title:page.title() } )
+                    return  { content: node.innerHTML, title:page.title() };
                 });
             });
             console.log(posts)
             // Sanity check: Log the number of posts found
             console.log(`Got ${posts.length} posts`);
-        const date = new Date();
-
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-
-// This arrangement can be altered based on how we want the date's format to appear.
-let currentDate = `${day}-${month}-${year}`;
+       
 console.log(currentDate); // "17-6-2022"
-        
-posts.forEach(async (post) => {
-await Actor.pushData({title:page.title, date:currentDate, content:post.content});
+        console.log(postData) 
+        if (postData.length > posts.length) {
+            console.log('other bigger');
+           
+await Actor.pushData( postData);
+            
   
-} )
+        } else{
+          
+await Actor.pushData(posts);
+  
+
+        }
+
             // Save Data to Key Value Store
            // await Actor.pushData(posts);
   
@@ -132,7 +143,7 @@ await Actor.pushData({title:page.title, date:currentDate, content:post.content})
 
         // Save Data to Key Value Store
         //await Actor.pushData(posts);
-        console.log('pushed posts', posts);
+        console.log('pushed posts', posts, postData);
 
         if(this.input.externalAPI) {
           console.log('sending posts to external API ');
