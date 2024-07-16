@@ -67,9 +67,10 @@ export class CrawlerSetup {
 //         };
 //     });
 // });
-
+console.log('hello');
    // collect important features from the current page including post titles, urls, and dates of posting
             const posts = await page.$$eval(".result-node", (nodes: any[]) => {
+              console.log('woprld');
                console.log(`Found ${nodes.length} results`);
                 return nodes.map(node => {
                     const titleElement = node.querySelector(".posting-title .label");
