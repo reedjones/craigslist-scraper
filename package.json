@@ -4,19 +4,19 @@
   "type": "module",
   "description": "An Actor that scrapes craigslist post data",
   "dependencies": {
-    "apify": "^3.0.0",
-    "axios": "^1.0.0",
-    "crawlee": "^3.0.0",
+    "apify": "latest",
+    "axios": "*",
+    "crawlee": "latest",
     "playwright": "*"
   },
   "devDependencies": {
-    "@apify/tsconfig": "^0.1.0",
-    "@typescript-eslint/eslint-plugin": "^5.39.0",
-    "@typescript-eslint/parser": "^5.39.0",
+    "@apify/tsconfig": "latest",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
     "eslint": "^8.24.0",
     "prettier": "^2.7.1",
-    "ts-node": "^10.8.0",
-    "typescript": "^4.7.4"
+    "ts-node": "*",
+    "typescript": "latest"
   },
   "scripts": {
     "start:local": "node dist/main-local.js",
