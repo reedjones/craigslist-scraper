@@ -1,29 +1,7 @@
 # Craigslist Scraper V3
 
 Scan craigslist for relevant posts and provides them to an external API
-- Define a search across any number of categories, geographic radi, search terms, etc.
-- Leverage Apify online orchestration to preform browser automations in a cloud environment or on a local docker container. 
-- Recieve downtime notifications using external Healthcheck api.
-- Includes tests for verifying functionality of all supported search parameters.
-- Includes custom typing for all dataclasses.
-- Includes recommended vscode extensions for quick onboarding of potential contributors.
 
-## Example Use Cases
-- Custom Craigslist Clients
-- Custom RSS feed Generation
-- Lead Generation
-- Scam investigations
-
-## Example Output
-<img width="665" alt="image" src="https://user-images.githubusercontent.com/13119103/216701935-42c5188d-8f1f-4111-afac-f3caa1e8e500.png">
-
-
-## Personal Note
-I love Craigslist. I used it to by my first car. I used it to furnash my first apartment. I used it to find one of my first farmhand jobs. I have even attempted to use it to track down my lost wallet. It is a simple site tied to a lot of great memories and great personal interactions. I am an avid user of the platform. Please be respectful if choosing to use this automation. May your requests be efficient and as infrequent as possible. 
-
-<img width="960" alt="image" src="https://user-images.githubusercontent.com/13119103/216713547-eade2492-40e1-460c-810f-22f7d67183e3.png">
-
-First Craigslist Car: cost me $300 and a TV
 
 ## Craigslist Categories
 
