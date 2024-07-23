@@ -8,7 +8,9 @@ import { InputSchema } from './types.js';
 
 const workingInputCase: InputSchema = {
 	category: ['ggg'],
-	maxPagesPerCrawl: 100,
+	site: ["sfbay"],
+	zipCode: ["94608, 60"],
+	maxPagesPerCrawl: 10,
 	proxyConfiguration: {
 		useApifyProxy: false,
 	},
@@ -23,5 +25,6 @@ const crawler = await crawlerSetup.getCrawler();
 console.info(
 	`Crawler Initialization Complete: ${crawlerSetup.startUrls.length} urls have been added to the queue`,
 );
+console.log(crawlerSetup.startUrls)
 await crawler.run(crawlerSetup.startUrls);
 await Actor.exit();

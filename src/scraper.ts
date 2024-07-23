@@ -7,7 +7,12 @@ import { Actor } from "apify";
 import axios from "axios";
 
 
-
+function uuid() {
+  var temp_url = URL.createObjectURL(new Blob());
+  var uuid = temp_url.toString();
+  URL.revokeObjectURL(temp_url);
+  return uuid.substr(uuid.lastIndexOf('/') + 1); // remove prefix (e.g. blob:null/, blob:www.test.com/, ...)
+}
 
 
 export class CrawlerSetup {
@@ -34,7 +39,7 @@ export class CrawlerSetup {
   }
 
   async getCrawler(): Promise<PlaywrightCrawler> {
-    await axios.get(this.input.healthcheck!).catch(() => {});
+    await axios.get(this.input.healthcheck!).catch(() => { });
 
     return new PlaywrightCrawler({
       maxConcurrency: this.input.maxConcurrency,
@@ -54,18 +59,18 @@ export class CrawlerSetup {
       // for each request preform the following:
       requestHandler: async ({ page, request }) => {
 
-        const key = request.url.replace(/[:/]/g, '_');
-        
+        let key = uuid();
+        //key = key.replace("?", "").replace("&", "").replace("=", "")
         console.log(`Scraping ${await page.title()} | ${request.url}`);
-          const actorCard = page.locator('.results').first();
+        const actorCard = page.locator('.results').first();
         // Upon calling one of the locator methods Playwright
         // waits for the element to render and then accesses it.
-        
+
         await page.waitForSelector('.results', { timeout: 10000 });
         const actorText = await actorCard.textContent();
         const screenshot = await page.screenshot();
-    // Save the screenshot to the default key-value store
-       await playwrightUtils.saveSnapshot(page, { key, saveHtml: false });
+        // Save the screenshot to the default key-value store
+        //await playwrightUtils.saveSnapshot(page, { key, saveHtml: false });
 
 
         let postData: { content: string, title: string }[] = [];
@@ -77,24 +82,24 @@ export class CrawlerSetup {
 
         postData.push(...posts);
 
-    console.log(`Got ${posts.length} posts`);
+        console.log(`Got ${posts.length} posts`);
         await Actor.pushData(postData);
 
-       
 
-        if(this.input.externalAPI) {
+
+        if (this.input.externalAPI) {
           console.log('sending posts to external API ');
-           await axios.post(this.input.externalAPI, posts).catch ( (err) => {
-console.log(`There was an Error sending data to external API \n API: ${this.input.externalAPI} \n error: ${err}`);
-             
-           } )
+          await axios.post(this.input.externalAPI, posts).catch((err) => {
+            console.log(`There was an Error sending data to external API \n API: ${this.input.externalAPI} \n error: ${err}`);
+
+          })
         } else { console.log('will not send to external api'); }
         // Send All posts to backend django server for analyses
         // posts.forEach(async (post) => {
         //   await console.log(post)
         //   await axios.post(this.input.externalAPI!, post).catch(() => {});
         // });
-        
+
       },
     });
   }

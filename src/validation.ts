@@ -86,6 +86,7 @@ function ensureDefinedInput(input: InputSchema): DefinedInputSchema {
  */
 function ensureNonEmptyInput(input: DefinedInputSchema): DefinedInputSchema {
   input = ensureDefinedInput(input);
+
   if (
     input.site.length === 0 &&
     input.geoLocation.length === 0 &&
